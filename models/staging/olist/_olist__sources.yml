@@ -1,0 +1,147 @@
+# models/staging/olist/_olist__sources.yml
+sources:
+  - name: olist
+    description: Exportação CSV do marketplace Olist.
+    meta:
+      external_location: "read_csv('data/raw/olist_{name}_dataset.csv', header = true)"
+    tables:
+      - name: customers
+        description: "Cadastro dos clientes da Olist."
+        meta:
+          owner: "Comercial"
+        columns:
+          - name: customer_id
+            description: "Identificador único do cliente."
+          - name: customer_unique_id
+            description: "Identificador único do consumidor."
+          - name: customer_zip_code_prefix
+            description: "Prefixo do CEP do cliente."
+          - name: customer_city
+            description: "Cidade do cliente."
+          - name: customer_state
+            description: "Estado do cliente."
+      - name: geolocation
+        description: "Dados de localização associados aos CEPs"
+        meta:
+          owner: "Logística"
+        columns:
+          - name: geolocation_zip_code_prefix
+            description: "Prefixo do CEP."
+          - name: geolocation_lat
+            description: "Latitude do CEP."
+          - name: geolocation_lng
+            description: "Longitude do CEP."
+          - name: geolocation_city
+            description: "Cidade associada ao CEP."
+          - name: geolocation_state
+            description: "Estado associado ao CEP."
+      - name: orders
+        description: "Pedidos realizados na Olist."
+        meta:
+          owner: "Operações"
+        columns:
+          - name: order_id
+            description: "Identificador único do pedido."
+          - name: customer_id
+            description: "Identificador do cliente que fez o pedido."
+          - name: order_status
+            description: "Status do pedido (delivered, shipped, canceled, etc.)."
+          - name: order_purchase_timestamp
+            description: "Data e hora em que o pedido foi realizado."
+          - name: order_approved_at
+            description: "Data e hora em que o pagamento do pedido foi aprovado."
+          - name: order_delivered_carrier_date
+            description: "Data e hora em que o pedido foi entregue à transportadora."
+          - name: order_delivered_customer_date
+            description: "Data e hora em que o pedido foi entregue ao cliente."
+          - name: order_estimated_delivery_date
+            description: "Data estimada de entrega informada ao cliente."
+      - name: order_items
+        description: "Itens que compõem cada pedido."
+        meta:
+          owner: "Comercial"
+        columns:
+          - name: order_id
+            description: "Identificador do pedido."
+          - name: order_item_id
+            description: "Número sequencial do item dentro do pedido."
+          - name: product_id
+            description: "Identificador do produto."
+          - name: seller_id
+            description: "Identificador do vendedor responsável pelo item."
+          - name: shipping_limit_date
+            description: "Data limite para envio do item ao transportador."
+          - name: price
+            description: "Preço do item."
+          - name: freight_value
+            description: "Valor do frete do item."
+      - name: order_payments
+        description: "Pagamentos realizados para cada pedido."
+        meta:
+          owner: "Financeiro"
+        columns:
+          - name: order_id
+            description: "Identificador do pedido."
+          - name: payment_sequential
+            description: "Número sequencial do pagamento (em caso de múltiplas formas de pagamento)."
+          - name: payment_type
+            description: "Tipo de pagamento (cartão de crédito, boleto, voucher, etc.)."
+          - name: payment_installments
+            description: "Número de parcelas do pagamento."
+          - name: payment_value
+            description: "Valor do pagamento."
+      - name: order_reviews
+        description: "Avaliações dos pedidos feitas pelos clientes."
+        meta:
+          owner: "Atendimento ao Cliente"
+        columns:
+          - name: review_id
+            description: "Identificador único da avaliação."
+          - name: order_id
+            description: "Identificador do pedido avaliado."
+          - name: review_score
+            description: "Nota da avaliação (1 a 5)."
+          - name: review_comment_title
+            description: "Título do comentário da avaliação."
+          - name: review_comment_message
+            description: "Texto do comentário da avaliação."
+          - name: review_creation_date
+            description: "Data em que a avaliação foi enviada."
+          - name: review_answer_timestamp
+            description: "Data em que a avaliação foi respondida pela Olist."
+      - name: sellers
+        description: "Cadastro dos vendedores da Olist."
+        meta:
+          owner: "Parcerias Comerciais"
+        columns:
+          - name: seller_id
+            description: "Identificador único do vendedor."
+          - name: seller_zip_code_prefix
+            description: "Prefixo do CEP do vendedor."
+          - name: seller_city
+            description: "Cidade do vendedor."
+          - name: seller_state
+            description: "Estado do vendedor."
+      - name: products
+        description: "Cadastro dos produtos vendidos na Olist."
+        meta:
+          owner: "Catálogo"
+        columns:
+          - name: product_id
+            description: "Identificador único do produto."
+          - name: product_category_name
+            description: "Categoria do produto (em português)."
+          - name: product_name_lenght
+            description: "Número de caracteres do nome do produto."
+          - name: product_description_lenght
+            description: "Número de caracteres da descrição do produto."
+          - name: product_photos_qty
+            description: "Quantidade de fotos cadastradas para o produto."
+          - name: product_weight_g
+            description: "Peso do produto em gramas."
+          - name: product_length_cm
+            description: "Comprimento do produto em centímetros."
+          - name: product_height_cm
+            description: "Altura do produto em centímetros."
+          - name: product_width_cm
+            description: "Largura do produto em centímetros."
