@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_olist__sellers
+    description: >
+      Um registro por vendedor cadastrado na Olist. Grão: seller_id.
+    columns:
+      - name: seller_id
+        description: "Identificador único do vendedor (chave primária)."
+        tests:
+          - unique
+          - not_null
+      - name: seller_zip_code_prefix
+        description: "Prefixo do CEP do vendedor."
+      - name: seller_city
+        description: "Cidade do vendedor."
+      - name: seller_state
+        description: "Estado do vendedor."

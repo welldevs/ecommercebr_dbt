@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: stg_olist__order_reviews
+    description: >
+      Um registro por avaliação de pedido. Grão: review_id + order_id
+      (chave composta — o dado bruto possui review_id duplicado entre
+      pedidos diferentes, então review_id sozinho não é único).
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - review_id
+              - order_id
+    columns:
+      - name: review_id
+        description: "Identificador da avaliação (não é único sozinho, ver grão do model)."
+        tests:
+          - not_null
+      - name: order_id
+        description: "Identificador do pedido avaliado."
+        tests:
+          - not_null
+      - name: review_score
+        description: "Nota da avaliação (1 a 5)."
+        tests:
+          - not_null
+      - name: review_comment_title
+        description: "Título do comentário da avaliação."
+      - name: review_comment_message
+        description: "Texto do comentário da avaliação."
+      - name: review_created_at
+        description: "Data em que a avaliação foi enviada."
+      - name: review_answered_at
+        description: "Data em que a avaliação foi respondida pela Olist."

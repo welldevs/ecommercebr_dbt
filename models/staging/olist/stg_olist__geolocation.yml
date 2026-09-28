@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_olist__geolocation
+    description: >
+      Um registro por coordenada geográfica associada a um CEP. Grão:
+      não há chave primária natural — o mesmo geolocation_zip_code_prefix
+      se repete várias vezes com coordenadas (lat/lng) diferentes, então
+      não é testado como único.
+    columns:
+      - name: geolocation_zip_code_prefix
+        description: "Prefixo do CEP."
+        tests:
+          - not_null
+      - name: geolocation_lat
+        description: "Latitude do CEP."
+      - name: geolocation_lng
+        description: "Longitude do CEP."
+      - name: geolocation_city
+        description: "Cidade associada ao CEP."
+      - name: geolocation_state
+        description: "Estado associado ao CEP."

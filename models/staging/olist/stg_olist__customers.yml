@@ -1,0 +1,22 @@
+version: 2
+
+models:
+  - name: stg_olist__customers
+    description: >
+      Um registro por cliente cadastrado na Olist. Grão: customer_id.
+    columns:
+      - name: customer_id
+        description: "Identificador único do cliente (chave primária)."
+        tests:
+          - unique
+          - not_null
+      - name: customer_unique_id
+        description: "Identificador único do consumidor (permite ligar múltiplos customer_id a uma mesma pessoa)."
+        tests:
+          - not_null
+      - name: customer_zip_code_prefix
+        description: "Prefixo do CEP do cliente."
+      - name: customer_city
+        description: "Cidade do cliente."
+      - name: customer_state
+        description: "Estado do cliente."

@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: stg_olist__products
+    description: >
+      Um registro por produto cadastrado na Olist. Grão: product_id.
+      Colunas com typo "lenght" no source foram renomeadas para "length"
+      nesta camada.
+    columns:
+      - name: product_id
+        description: "Identificador único do produto (chave primária)."
+        tests:
+          - unique
+          - not_null
+      - name: product_category_name
+        description: "Categoria do produto (em português)."
+      - name: product_name_length
+        description: "Número de caracteres do nome do produto."
+      - name: product_description_length
+        description: "Número de caracteres da descrição do produto."
+      - name: product_photos_qty
+        description: "Quantidade de fotos cadastradas para o produto."
+      - name: product_weight_g
+        description: "Peso do produto em gramas."
+      - name: product_length_cm
+        description: "Comprimento do produto em centímetros."
+      - name: product_height_cm
+        description: "Altura do produto em centímetros."
+      - name: product_width_cm
+        description: "Largura do produto em centímetros."

@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stg_olist__orders
+    description: >
+      Um registro por pedido realizado na Olist. Grão: order_id.
+      Camada de staging apenas com renomeação de colunas e cast de tipos,
+      sem regras de negócio aplicadas.
+    columns:
+      - name: order_id
+        description: "Identificador único do pedido (chave primária)."
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Identificador do cliente que fez o pedido."
+        tests:
+          - not_null
+      - name: order_status
+        description: "Status do pedido (delivered, shipped, canceled, etc.)."
+        tests:
+          - not_null
+      - name: order_purchased_at
+        description: "Data e hora em que o pedido foi realizado."
+      - name: order_approved_at
+        description: "Data e hora em que o pagamento do pedido foi aprovado."
+      - name: order_delivered_carrier_at
+        description: "Data e hora em que o pedido foi entregue à transportadora."
+      - name: order_delivered_customer_at
+        description: "Data e hora em que o pedido foi entregue ao cliente."
+      - name: order_estimated_delivery_at
+        description: "Data estimada de entrega informada ao cliente."

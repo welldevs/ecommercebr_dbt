@@ -92,7 +92,33 @@ dbt build         # roda seeds, models e testes no target dev
 
 Três camadas — staging, intermediate e marts — descritas em detalhe no README do trilhamento do projeto. Sources declaradas com `external_location` + `read_csv`, sem carregar os dados brutos no banco; seeds para dados de referência pequenos e estáticos.
 
+## Camada de staging
+
+Um model por fonte (`stg_olist__<entidade>`), sem joins nem agregações — só renomeação de colunas e cast de tipos. Cada model tem sua própria `schema.yml` com description, grão declarado e teste de chave primária (simples ou composta, via `dbt_utils.unique_combination_of_columns` quando aplicável):
+
+| Model | Grão |
+| --- | --- |
+| `stg_olist__orders` | `order_id` |
+| `stg_olist__customers` | `customer_id` |
+| `stg_olist__sellers` | `seller_id` |
+| `stg_olist__products` | `product_id` |
+| `stg_olist__order_items` | `order_id` + `order_item_id` |
+| `stg_olist__order_payments` | `order_id` + `payment_sequential` |
+| `stg_olist__order_reviews` | `review_id` + `order_id` (o `review_id` sozinho não é único no dado bruto) |
+| `stg_olist__geolocation` | sem chave primária natural — várias coordenadas por prefixo de CEP |
+
+Valide tudo com:
+
+```bash
+dbt build -s staging
+```
+
+## Limitações conhecidas
+
+- **`dbt-labs/codegen` não é compatível com o padrão de sources deste projeto.** As macros `generate_source` e `generate_base_model` fazem introspecção de colunas via `information_schema`/`DESCRIBE` assumindo tabelas já carregadas num schema físico. Como as sources aqui usam `external_location` + `read_csv` (sem carga física), ambas falham no DuckDB. Alternativa usada: `DESCRIBE SELECT * FROM read_csv(...)` via `dbt show --inline`, manual.
+- **Views sobre `read_csv` com caminho relativo só funcionam dentro do contexto do dbt.** Abrir o arquivo `.duckdb` direto em outra ferramenta (ex.: DBeaver) e consultar um model de staging pode falhar, porque o caminho relativo do CSV é resolvido a partir do diretório de execução do dbt (`external_root`), não do cliente SQL. Models pensados para consumo externo devem ser materializados como `table`.
+
 ## Status atual
 
 - **Fase 0 (fundação):** concluída — perfis, schemas por ambiente, sources e pacotes configurados.
-- **Fase 1 (staging) em diante:** ainda não iniciada.
+- **Fase 1 (staging):** em andamento — DATA-01 e DATA-02 concluídos (8 models de staging com testes). Faltam DATA-03 (relatório de qualidade) e DATA-04 (tempo simulado / `data_corte`).
